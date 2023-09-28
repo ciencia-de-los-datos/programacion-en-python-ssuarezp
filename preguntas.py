@@ -28,6 +28,15 @@ def pregunta_01():
     214
 
     """
+    import csv
+    with open('data.csv','r',encoding='UTF-8') as data:
+        entrada=csv.reader(data,delimiter=' ')
+        lista=list(entrada)
+    listadef=[]
+    for linea in lista:
+        x=linea[0].split('\t')
+        listadef.append(x)
+
     sum=0
     for i in listadef:
         sum=sum+int(i[1])
