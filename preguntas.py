@@ -12,13 +12,15 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 import csv
-with open('data.csv','r',encoding='UTF-8') as data:
-    entrada=csv.reader(data,delimiter=' ')
-    lista=list(entrada)
-listadef=[]
-for linea in lista:
-    x=linea[0].split('\t')
-    listadef.append(x)
+import itertools
+from collections import Counter
+from datetime import datetime
+from operator import itemgetter
+
+with open("data.csv","r") as file:
+    datos= file.readlines()
+datos=[line.replace('\t','|').replace('\n','') for line in datos]
+datos=[line.split('|') for line in datos]
 
 def pregunta_01():
     """
@@ -28,17 +30,8 @@ def pregunta_01():
     214
 
     """
-    import csv
-    with open('data.csv','r',encoding='UTF-8') as data:
-        entrada=csv.reader(data,delimiter=' ')
-        lista=list(entrada)
-    listadef=[]
-    for linea in lista:
-        x=linea[0].split('\t')
-        listadef.append(x)
-
     sum=0
-    for i in listadef:
+    for i in datos:
         sum=sum+int(i[1])
     return sum
 
@@ -59,7 +52,7 @@ def pregunta_02():
 
     """
     lista=[]
-    for i in listadef:
+    for i in datos:
         lista.append(i[0])
     lista2=[]
     lista2.append(("A",lista.count("A")))
@@ -85,11 +78,11 @@ def pregunta_03():
     ]
 
     """
-    lista = [z[0] for z in listadef[0:]]
+    lista = [z[0] for z in datos[0:]]
     lista = sorted(list(set(lista)))
     listasum= []
     for i in lista:
-        a = [int(z[1]) for z in listadef[0:] if z[0] == i]
+        a = [int(z[1]) for z in datos[0:] if z[0] == i]
         listasum.append(sum(a))
     listasum = list(zip(lista,listasum))
     return listasum
@@ -117,7 +110,7 @@ def pregunta_04():
     ]
 
     """
-    lista = [z[2].split("-") for z in listadef[0:]]
+    lista = [z[2].split("-") for z in datos[0:]]
     b = sorted(list(set([z[1] for z in lista])))
     cuenta = []
     for i in b:
@@ -142,12 +135,12 @@ def pregunta_05():
     ]
 
     """
-    lista = [z[0] for z in listadef[0:]]
+    lista = [z[0] for z in datos[0:]]
     lista = sorted(list(set(lista)))
     maximo = []
     minimo = []
     for i in lista:
-        a = [int(z[1]) for z in listadef[0:] if z[0] == i]
+        a = [int(z[1]) for z in datos[0:] if z[0] == i]
         maximo.append(max(a))
         minimo.append(min(a))
     valor = list(zip(lista,maximo,minimo))
@@ -177,7 +170,7 @@ def pregunta_06():
 
     """
     diccionario={}
-    for row in listadef:
+    for row in datos:
         for i in row[4].split(","):
             currentKeyValue = diccionario.get(str(i[:3]),-1)
             currentValue = int(i[4:])
@@ -214,7 +207,7 @@ def pregunta_07():
 
     """
     diccionario = {}
-    for i in listadef:
+    for i in datos:
         index = int(i[1])
         current = diccionario.get(index,-1)
         if(current == -1):
@@ -247,7 +240,7 @@ def pregunta_08():
 
     """
     diccionario = {}
-    for i in listadef:
+    for i in datos:
         current = diccionario.get(i[1],-1)
         if(current == -1):
             diccionario[i[1]] = [i[0]]
@@ -281,7 +274,7 @@ def pregunta_09():
 
     """
     diccionario={}
-    for i in listadef:
+    for i in datos:
         for i in i[4].split(","):
             diccionario[str(i[:3])] = diccionario.get(str(i[:3]),0) + 1
     return dict(sorted(diccionario.items()))
@@ -305,8 +298,8 @@ def pregunta_10():
 
 
     """
-     lista = []
-    for i in listadef:
+    lista = []
+    for i in datos:
         lista.append((i[0],len(i[3].split(",")),len(i[4].split(","))))
     return lista
 
@@ -330,7 +323,7 @@ def pregunta_11():
 
     """
     diccionario={}
-    for row in listadef:
+    for row in datos:
         for i in row[3].split(","):
             diccionario[str(i)] = diccionario.get(str(i),0) + int(row[1])
     return dict(sorted(diccionario.items()))
@@ -352,7 +345,7 @@ def pregunta_12():
 
     """
     diccionario={}
-    for row in listadef:
+    for row in datos:
         for i in row[4].split(","):
             diccionario[row[0]] = diccionario.get(row[0],0) + int(i[4:])
     return dict(sorted(diccionario.items())) 
